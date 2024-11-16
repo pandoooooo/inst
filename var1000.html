@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <script>
+        //displayLogin();
+
+        let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser")) || null;
+        const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+        if (loggedInUser) {
+            displayInstagram();
+        }
+        else {
+            displayLogin();
+        }
+
+
+        function displayLogin() {
+            document.body.innerHTML = "";
+
+
+            const logg = document.createElement("div");
+            logg.classList.add("login");
+
+            const title = document.createElement("div");
+            title.textContent = "LogIn";
+            logg.appendChild(title);
+
+            const endl = document.createElement("br");
+            logg.appendChild(endl);
+
+            const formLog = document.createElement("form");
+            formLog.id = "loginForm";
+
+            const emailLabel = document.createElement("label");
+            emailLabel.textContent = "Email";
+            formLog.appendChild(emailLabel);
+            formLog.appendChild(endl);
+
+            const emailInput = document.createElement("input");
+            emailInput.type = "email";
+            emailInput.id = "email";
+            emailInput.name = "emailName";
+            emailInput.required = true;
+            emailInput.pattern = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
+            formLog.appendChild(emailInput);
+            formLog.appendChild(endl);
+
+            const passwordLabel = document.createElement("label");
+            passwordLabel.textContent = "Password";
+            formLog.appendChild(passwordLabel);
+            formLog.appendChild(endl);
+
+            const passwordInput = document.createElement("input");
+            passwordInput.type = "password";
+            passwordInput.id = "password";
+            passwordInput.name = "passwordName";
+            passwordInput.required = true;
+            passwordInput.pattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}";
+            passwordInput.title = "Must contain at least one number, one uppercase and lowercase letter, and at least 8 characters";
+            formLog.appendChild(passwordInput);
+
+            const loginBtt = document.createElement("button");
+            loginBtt.id = "loginbutton";
+            loginBtt.type = "submit";
+            loginBtt.textContent = "Log In";
+            formLog.appendChild(loginBtt);
+
+            const registerBtt = document.createElement("button");
+            registerBtt.id = "registerbutton";
+            registerBtt.textContent = "Register";
+            registerBtt.type = "button";
+            registerBtt.addEventListener("click", function () {
+                displayRegister();
+            });
+            formLog.appendChild(registerBtt);
+
+            logg.appendChild(formLog);
+            document.body.appendChild(logg);
+
+            formLog.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const email = emailInput.value;
+                const password = passwordInput.value;
+
+
+                //trebuie lucrat cu var globala
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i].email === email && users[i].password === password) {
+                        loggedInUser = users[i];
+                        break;
+                    }
+                }
+
+                if (loggedInUser) {
+
+                    localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+                    console.log("User logged in:", loggedInUser);
+
+                    displayInstagram();
+                } else {
+                    alert("Invalid email or password");
+                }
+            });
+        }
+
+        //displayRegister();
+
+
+        function displayRegister() {
+            document.body.innerHTML = "";
+
+            const regg = document.createElement("div");
+            regg.classList.add("login");
+
+            const title = document.createElement("div");
+            title.textContent = "Register";
+
+            regg.appendChild(title);
+
+            const endl = document.createElement("br");
+
+            const formReg = document.createElement("form");
+            formReg.id = "regForm";
+
+            const firstNameLabel = document.createElement("label");
+            firstNameLabel.textContent = "First Name:";
+
+            formReg.appendChild(firstNameLabel);
+            formReg.appendChild(endl);
+
+            const firstNameInput = document.createElement("input");
+            firstNameInput.type = "name";
+            firstNameInput.id = "firstname";
+            firstNameInput.name = "firstName";
+            firstNameInput.required = true;
+
+            formReg.appendChild(firstNameInput);
+
+            const lastNameLabel = document.createElement("label");
+            lastNameLabel.textContent = "Last Name";
+
+            formReg.appendChild(lastNameLabel);
+            formReg.appendChild(endl);
+
+            const lastNameInput = document.createElement("input");
+            lastNameInput.type = "name";
+            lastNameInput.id = "lastname";
+            lastNameInput.name = "lastName";
+            lastNameInput.required = true;
+
+            formReg.appendChild(lastNameInput);
+
+            const userNameLabel = document.createElement("label");
+            userNameLabel.textContent = "Username";
+
+            formReg.appendChild(userNameLabel);
+            formReg.appendChild(endl);
+
+            const userNameInput = document.createElement("input");
+            userNameInput.id = "username";
+            userNameInput.type = "name";
+            userNameInput.name = "userName";
+            userNameInput.required = true;
+
+            formReg.appendChild(userNameInput);
+
+            const emailLabel = document.createElement("label");
+            emailLabel.textContent = "Email:";
+
+            formReg.appendChild(emailLabel);
+            formReg.appendChild(endl);
+
+            const emailInput = document.createElement("input");
+            emailInput.type = "email";
+            emailInput.id = "email";
+            emailInput.name = "emailName";
+            emailInput.required = true;
+            emailInput.pattern = "/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/";
+
+            formReg.appendChild(emailInput);
+            formReg.appendChild(endl);
+
+            const passwordLable = document.createElement("lable");
+            passwordLable.textContent = "Password";
+
+            formReg.appendChild(passwordLable);
+            formReg.appendChild(endl);
+
+            const passwordInput = document.createElement("input");
+            passwordInput.type = "password";
+            passwordInput.id = "password";
+            passwordInput.name = "passswordName";
+            passwordInput.required = true;
+            passwordInput.pattern = "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}";
+            passwordInput.title = "Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters";
+
+
+            formReg.appendChild(passwordInput);
+
+            const passwordMess = document.createElement("div");
+            passwordMess.id = "passwordMessage";
+
+            const messages = [{ id: "length", text: "Minimum 8 characters" },
+            { id: "uppercase", text: "At least one uppercase letter (A-Z)" },
+            { id: "lowercase", text: "At least one lowercase letter (a-z)" },
+            { id: "number", text: "At least one digit (0-9)" },
+            { id: "special", text: "At least one special symbol (!@#$%^&*)" },
+            ];
+
+            messages.forEach(mess => {
+
+                const p = document.createElement("p");
+                p.classList.add("invalid");
+                p.id = mess.id;
+                p.textContent = mess.text;
+                passwordMess.appendChild(p);
+            });
+
+            formReg.appendChild(passwordMess);
+            formReg.appendChild(endl);
+
+            const registerBtt = document.createElement("button");
+            registerBtt.id = "registerbutton";
+            registerBtt.textContent = "Register";
+
+            formReg.appendChild(registerBtt);
+
+            regg.appendChild(formReg);
+
+            document.body.appendChild(regg);
+
+            formReg.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const email = emailInput.value;
+                const password = passwordInput.value;
+                const username = userNameInput.value;
+                const firstName = firstNameInput.value;
+                const lastName = lastNameInput.value;
+
+
+                const newUser = {
+                    email: email,
+                    password: password,
+                    username: username,
+                    firstName: firstName,
+                    lastName: lastName,
+                    description: "Descriere",
+                    posts: [],
+                    profileImage: [],
+                    followers: [],
+                    following: []
+                };
+
+
+                users.push(newUser);
+
+
+                localStorage.setItem("users", JSON.stringify(users));
+
+                alert("Registration successful!");
+                displayLogin();
+            });
+        }
+        //displayInstagram();
+
+
+
+        function displayInstagram() {
+            const endl = document.createElement("br");
+            document.body.innerHTML = "";
+            const principal = document.createElement("div");
+            principal.className = "principal";
+            principal.id = "principal";
+
+
+
+            const sidebarDiv = document.createElement("div");
+            sidebarDiv.className = "sidebar";
+
+
+            const profileDiv = document.createElement("div");
+            profileDiv.className = "profile";
+
+            const profileImg = document.createElement("img");
+            profileImg.src = "story6.avif";
+            profileImg.className = "profile-img";
+            profileImg.width = 50;
+
+            profileImg.addEventListener("click", () => {
+                displayProfil();
+            });
+
+            const profileName = document.createElement("div");
+
+
+            if (loggedInUser) {
+                profileName.textContent = loggedInUser.username;
+            } else {
+                profileName.textContent = "Guest";
+            }
+
+            profileDiv.appendChild(profileImg);
+            profileDiv.appendChild(profileName);
+
+            sidebarDiv.appendChild(profileDiv);
+
+
+            const suggestedDiv = document.createElement("div");
+            suggestedDiv.className = "suggestedSection";
+
+            const suggestedTitle = document.createElement("div");
+            suggestedTitle.className = "titlesuggested";
+            suggestedTitle.textContent = "Sugestii pentru tine";
+
+            suggestedDiv.appendChild(suggestedTitle);
+            suggestedDiv.appendChild(endl);
+
+
+            const followButtons = document.createElement("div");
+            users.forEach(user => {
+                const followDiv = document.createElement("div");
+                followDiv.className = "suggested";
+
+                const userInfoDiv = document.createElement("div");
+                userInfoDiv.className = "suggested-title";
+
+                const profilePic = document.createElement("img");
+                profilePic.src = users?.profileImage || "story6.avif";
+                profilePic.className = "avatarsuggested";
+                userInfoDiv.appendChild(profilePic);
+
+                const userName = document.createElement("span");
+                userName.textContent = user.username;
+                userInfoDiv.appendChild(userName);
+
+                followDiv.appendChild(userInfoDiv);
+
+                const followButton = document.createElement("button");
+                followButton.className = "followBtn";
+                followButton.textContent = "Follow";
+                followButton.id = user.email;
+                followButton.addEventListener("click", () => followUser(user.username));
+
+                followDiv.appendChild(followButton);
+                followButtons.appendChild(followDiv);
+            });
+            suggestedDiv.appendChild(followButtons);
+            principal.appendChild(suggestedDiv);
+
+
+            sidebarDiv.appendChild(suggestedDiv);
+            principal.appendChild(sidebarDiv);
+            const instaDiv = document.createElement("div");
+            const instaImg = document.createElement("img");
+            instaImg.src = "insta.png";
+            instaImg.width = 100;
+
+            instaDiv.appendChild(instaImg);
+            principal.appendChild(instaDiv);
+
+            const menuDiv = document.createElement("div");
+            menuDiv.className = "meniu";
+            const menuIcons = ["home.png", "search.png", "explore.png", "reels.png", "mess.png", "not.png", "create.png", "profile.png", "logout.png"];
+
+            menuIcons.forEach(icon => {
+                const iconDiv = document.createElement("div");
+                const iconImg = document.createElement("img");
+                iconImg.className = "imaginimeniu";
+                iconImg.src = icon;
+
+                if (icon === "logout.png") {
+                    iconImg.addEventListener("click", () => {
+
+                        displayLogin();
+                        localStorage.removeItem('loggedInUser');
+                        loggedInUser = null;
+
+                    });
+                }
+                iconDiv.appendChild(iconImg);
+                menuDiv.appendChild(iconDiv);
+            });
+
+
+            principal.appendChild(menuDiv);
+
+            const forYouDiv = document.createElement("div");
+
+            const textDiv = document.createElement("div");
+            textDiv.className = "text";
+
+            const boldText = document.createElement("b");
+            boldText.textContent = "For you";
+            textDiv.appendChild(boldText);
+
+            const space = document.createTextNode(" ");
+            textDiv.appendChild(space);
+
+            const greyText = document.createElement("span");
+            greyText.style.color = "grey";
+            greyText.textContent = "Following";
+            textDiv.appendChild(greyText);
+
+            forYouDiv.appendChild(textDiv);
+
+            const hr = document.createElement("hr");
+            hr.style.gridColumnStart = 2;
+            hr.style.gridColumnEnd = 5;
+
+            forYouDiv.appendChild(hr);
+            principal.appendChild(forYouDiv);
+
+            const mijlocDiv = document.createElement("div");
+            mijlocDiv.className = "mijloc";
+
+            const imaginiDiv = document.createElement("div");
+            imaginiDiv.className = "imagini";
+
+            const stories = [
+                { src: "story1.png", name: "ana.341" },
+                { src: "story2.avif", name: "robo.robo" },
+                { src: "story3.avif", name: "roxana.ana" },
+                { src: "story4.avif", name: "ovidiu29" },
+                { src: "story5.avif", name: "granny.stillalive" },
+                { src: "story6.avif", name: "dogo" },
+                { src: "story7.avif", name: "meow" },
+                { src: "story8.avif", name: "aranjamente.flori" }
+            ];
+
+            stories.forEach(story => {
+                const storyDiv = document.createElement("div");
+                storyDiv.className = "nume";
+
+                const storyImg = document.createElement("img");
+                storyImg.className = "imagi";
+                storyImg.src = story.src;
+
+                storyDiv.appendChild(storyImg);
+                storyDiv.append(story.name);
+                imaginiDiv.appendChild(storyDiv);
+            });
+
+            mijlocDiv.appendChild(imaginiDiv);
+            principal.appendChild(mijlocDiv);
+
+
+            const postDiv = document.createElement("div");
+            postDiv.className = "postare";
+            principal.appendChild(postDiv);
+
+            const lineDiv = document.createElement("div");
+            lineDiv.className = "linie";
+
+            document.body.appendChild(principal);
+
+        }
+
+        //displayProfil();
+
+        function displayProfil() {
+            document.body.innerHTML = "";
+            const endl = document.createElement("br");
+            const principal = document.createElement("div");
+            principal.className = "principal";
+            principal.id = "principal";
+
+            const instaDiv = document.createElement("div");
+            const instaImg = document.createElement("img");
+            instaImg.src = "insta.png";
+            instaImg.width = 100;
+
+            instaDiv.appendChild(instaImg);
+            principal.appendChild(instaDiv);
+
+            const menuDiv = document.createElement("div");
+            menuDiv.className = "meniu";
+            const menuIcons = ["home.png", "search.png", "explore.png", "reels.png", "mess.png", "not.png", "create.png", "profile.png"];
+
+            menuIcons.forEach(icon => {
+                const iconDiv = document.createElement("div");
+                const iconImg = document.createElement("img");
+                iconImg.className = "imaginimeniu";
+                iconImg.src = icon;
+
+                if (icon === "create.png") {
+                    iconImg.addEventListener("click", photoUpload);
+                }
+                if (icon === "home.png") {
+                    iconImg.addEventListener("click", displayInstagram);
+                }
+                iconDiv.appendChild(iconImg);
+                menuDiv.appendChild(iconDiv);
+            });
+
+            principal.appendChild(menuDiv);
+
+            const profileSection = document.createElement("div");
+            profileSection.className = "profileSection";
+
+            const avatar = document.createElement("img");
+            avatar.src = loggedInUser?.profileImage || "story6.avif";
+            avatar.className = "avatar";
+            avatar.width = 100;
+
+            profileSection.appendChild(avatar);
+
+            let izEditPro = false;
+
+            const profileImageInput = document.createElement("input");
+            profileImageInput.type = "file";
+            profileImageInput.accept = "image/*";
+            profileImageInput.style.display = "none";
+            profileImageInput.addEventListener("change", function () {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    avatar.src = e.target.result;
+                    saveProfileImage(e.target.result);
+                    izEditPro = false;
+                    profileImageInput.style.display = "none";
+                };
+                reader.readAsDataURL(profileImageInput.files[0]);
+            });
+            avatar.addEventListener("dblclick", () => {
+
+                profileImageInput.style.display = "none";
+            })
+            avatar.addEventListener("click", () => {
+
+                profileImageInput.style.display = "block";
+            })
+            profileSection.appendChild(profileImageInput);
+
+            const userInfo = document.createElement("div");
+            userInfo.className = "userInfo";
+
+            const username = document.createElement("h2");
+            username.textContent = loggedInUser?.username || "guest";
+            userInfo.appendChild(username);
+
+            const bio = document.createElement("p");
+            bio.textContent = "Descrierea utilizatorului: ";
+
+            let bioDes = document.createElement("span");
+            bioDes.textContent = loggedInUser?.description || "No description";
+
+            bio.appendChild(bioDes);
+
+            const editProf = document.createElement("button");
+            editProf.className = "editbtn";
+            editProf.textContent = "Edit Profile";
+
+            editProf.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                if (izEditPro == false) {
+                    const inp = document.createElement("input");
+                    inp.type = "text";
+                    inp.placeholder = bioDes.textContent;
+
+                    bio.replaceChild(inp, bioDes);
+
+                    editProf.textContent = "Save";
+                    izEditPro = true;
+
+                } else {
+                    const newDes = bio.querySelector("input").value;
+                    const desNew = document.createElement("span");
+                    desNew.textContent = newDes;
+
+                    bio.replaceChild(desNew, bio.querySelector("input"));
+                    bioDes = desNew;
+
+                    editProf.textContent = "Edit Profile";
+                    izEditPro = false;
+
+
+
+                    const userIndex = users.findIndex(user => user.email === loggedInUser.email);
+                    if (userIndex !== -1) {
+                        users[userIndex].description = newDes;
+                        localStorage.setItem("users", JSON.stringify(users));
+                        localStorage.setItem("loggedInUser", JSON.stringify(users[userIndex]));
+                    }
+                }
+            });
+
+            userInfo.appendChild(bio);
+            userInfo.appendChild(endl);
+            userInfo.appendChild(editProf);
+            profileSection.appendChild(userInfo);
+
+            const stats = document.createElement("div");
+            stats.className = "stats";
+
+            const posts = document.createElement("p");
+            posts.textContent = "Postări:";
+            const nrpost = document.createElement("span");
+            nrpost.textContent = loggedInUser?.posts?.length || "0";
+            posts.appendChild(nrpost);
+            stats.appendChild(posts);
+
+            const followers = document.createElement("div");
+            followers.textContent = "Followers:";
+
+            followers.addEventListener("click", () => showFollowers());
+            const nrFollowers = document.createElement("span");
+            nrFollowers.id = "followers";
+            nrFollowers.textContent = loggedInUser?.followers?.length || "0";
+            followers.appendChild(nrFollowers);
+            stats.appendChild(followers);
+
+            const following = document.createElement("div");
+            following.textContent = "Following:";
+
+            following.addEventListener("click", () => showFollowing());
+
+            const nrFollowing = document.createElement("span");
+            nrFollowing.id = "following";
+            nrFollowing.textContent = loggedInUser?.following?.length || "0";
+            following.appendChild(nrFollowing);
+            stats.appendChild(following);
+
+            profileSection.appendChild(stats);
+            principal.appendChild(profileSection);
+
+            const photoGrid = document.createElement("div");
+            photoGrid.className = "photoGrid";
+            displayPhotos(loggedInUser, photoGrid);
+            principal.appendChild(photoGrid);
+            document.body.appendChild(principal);
+        }
+
+        function photoUpload() {
+            const photoFeed = document.createElement("div");
+            photoFeed.className = "photoFeed";
+
+            const photoInput = document.createElement("input");
+            photoInput.type = "file";
+            photoInput.accept = "image/*";
+
+            const descriptionPhotoInput = document.createElement("input");
+            descriptionPhotoInput.type = "text";
+            descriptionPhotoInput.placeholder = "Add a description.";
+
+            const closeBtn = document.createElement("button");
+            closeBtn.textContent = "Close";
+            closeBtn.addEventListener("click", () => {
+                document.body.removeChild(photoFeed);
+            });
+
+            const submitBtn = document.createElement("button");
+            submitBtn.textContent = "Upload";
+            submitBtn.addEventListener("click", () => handleUpload(photoInput, descriptionPhotoInput.value));
+
+            photoFeed.appendChild(photoInput);
+            photoFeed.appendChild(descriptionPhotoInput);
+            photoFeed.appendChild(submitBtn);
+            photoFeed.appendChild(closeBtn);
+            document.body.appendChild(photoFeed);
+        }
+
+
+
+        function handleUpload(photoInput, description) {
+
+            const file = photoInput.files[0];
+
+            if (file) {
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+
+                    const imgData = e.target.result;
+
+
+
+
+                    const userIndex = users.findIndex(user => user.email === loggedInUser.email);
+                    if (userIndex !== -1) {
+                        users[userIndex].posts = users[userIndex].posts || [];
+                        users[userIndex].posts.push({
+                            imgData,
+                            description,
+                            comments: []
+                        });
+
+                        //  users[userIndex].posts = [];
+                        //  loggedInUser.posts = [];
+
+                        localStorage.setItem("users", JSON.stringify(users));
+                        localStorage.setItem("loggedInUser", JSON.stringify(users[userIndex]));
+
+
+
+
+
+                        const photoGrid = document.querySelector(".photoGrid");
+                        displayPhotos(users[userIndex], photoGrid);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        function displayPhotos(user, container) {
+
+            container.innerHTML = "";
+
+            if (user.posts && user.posts.length > 0) {
+                user.posts.forEach((post, index) => {
+                    const img = document.createElement("img");
+                    img.src = post.imgData;
+                    img.className = "photo";
+                    img.addEventListener("click", () => openPhotoPopUp(post));
+                    container.appendChild(img);
+                });
+            } else {
+                container.textContent = "No photos yet.";
+            }
+        }
+
+
+
+        function openPhotoPopUp(post) {
+            const popup = document.createElement("div");
+            popup.className = "popup";
+
+            const imgContainer = document.createElement("div");
+            imgContainer.className = "imgContainer";
+            const img = document.createElement("img");
+            img.src = post.imgData;
+            imgContainer.appendChild(img);
+            popup.appendChild(imgContainer);
+
+            const detailsContainer = document.createElement("div");
+            detailsContainer.className = "detailsContainer";
+
+            const description = document.createElement("p");
+            description.className = "postDescription";
+            description.textContent = post.description || "No description.";
+            detailsContainer.appendChild(description);
+
+            const commentsSection = document.createElement("div");
+            commentsSection.className = "commentsSection";
+
+
+
+            let userPost = null;
+
+
+            if (loggedInUser) {
+                const userIndex = users.findIndex(user => user.email === loggedInUser.email);
+                if (userIndex !== -1) {
+                    userPost = users[userIndex].posts.find(p => p.imgData === post.imgData);
+                }
+            }
+
+
+            if (userPost && userPost.comments) {
+                userPost.comments.forEach((comment, index) => {
+                    const commentElem = document.createElement("div");
+                    commentElem.className = "comment";
+
+
+                    const avatar = document.createElement("img");
+                    avatar.src = comment.avatar || "story6.avif";
+                    avatar.alt = "Avatar";
+                    avatar.className = "commentAvatar";
+
+                    const commentText = document.createElement("p");
+                    commentText.textContent = `${comment.username}: ${comment.text}`;
+
+                    commentElem.appendChild(avatar);
+                    commentElem.appendChild(commentText);
+
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "X";
+                    deleteBtn.className = "deleteCommentBtn";
+
+                    deleteBtn.addEventListener("click", () => {
+                        userPost.comments.splice(index, 1);
+                        localStorage.setItem("users", JSON.stringify(users));
+                        commentElem.remove();
+                    });
+
+                    commentElem.appendChild(deleteBtn);
+                    commentsSection.appendChild(commentElem);
+                });
+            }
+
+            detailsContainer.appendChild(commentsSection);
+
+            const commentInput = document.createElement("input");
+            commentInput.type = "text";
+            commentInput.placeholder = "Add a comment...";
+            commentInput.className = "commentInput";
+
+            const addCommentBtn = document.createElement("button");
+            addCommentBtn.textContent = "Post";
+            addCommentBtn.className = "addCommentBtn";
+
+            addCommentBtn.addEventListener("click", () => {
+                if (loggedInUser && commentInput.value.trim()) {
+                    const comment = {
+                        username: loggedInUser.username,
+                        text: commentInput.value,
+                        avatar: loggedInUser.avatar
+                    };
+
+                    if (userPost) {
+                        userPost.comments.push(comment);
+                        localStorage.setItem("users", JSON.stringify(users));
+
+                        const newCommentElem = document.createElement("div");
+                        newCommentElem.className = "comment";
+
+
+                        const avatar = document.createElement("img");
+                        avatar.src = comment.avatar || "story6.avif";
+                        avatar.alt = "Avatar";
+                        avatar.className = "commentAvatar";
+
+                        const newCommentText = document.createElement("p");
+                        newCommentText.textContent = `${comment.username}: ${comment.text}`;
+
+                        newCommentElem.appendChild(avatar);
+                        newCommentElem.appendChild(newCommentText);
+
+                        const newDeleteBtn = document.createElement("button");
+                        newDeleteBtn.textContent = "X";
+                        newDeleteBtn.className = "deleteCommentBtn";
+
+                        newDeleteBtn.addEventListener("click", () => {
+                            userPost.comments = userPost.comments.filter(c => c !== comment);
+                            localStorage.setItem("users", JSON.stringify(users));
+                            newCommentElem.remove();
+                        });
+
+                        newCommentElem.appendChild(newDeleteBtn);
+                        commentsSection.appendChild(newCommentElem);
+                        commentInput.value = "";
+                    }
+                }
+            });
+
+            detailsContainer.appendChild(commentInput);
+            detailsContainer.appendChild(addCommentBtn);
+            popup.appendChild(detailsContainer);
+
+            const closeBtn = document.createElement("button");
+            closeBtn.textContent = "Close";
+            closeBtn.className = "closeBtn";
+            closeBtn.addEventListener("click", () => document.body.removeChild(popup));
+            popup.appendChild(closeBtn);
+
+
+
+            document.body.appendChild(popup);
+        }
+        function saveProfileImage(image) {
+            if (loggedInUser) {
+                loggedInUser.profileImage = image;
+                localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+            }
+        }
+        function showFollowers() {
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+            const followersPopup = document.createElement("div");
+            followersPopup.className = "followersPopup";
+
+            const followersContainer = document.createElement("div");
+            followersContainer.className = "followersContainer";
+
+            const title = document.createElement("h3");
+            title.textContent = "Followers";
+            followersContainer.appendChild(title);
+
+            const searchInput = document.createElement("input");
+            searchInput.className = "searchInput";
+            searchInput.placeholder = "Search Followers...";
+            followersContainer.appendChild(searchInput);
+
+            const followersListContainer = document.createElement("div");
+            followersListContainer.className = "followersList";
+            followersContainer.appendChild(followersListContainer);
+
+
+            displayFollowers(loggedInUser.followers, followersListContainer);
+
+            searchInput.addEventListener("input", (e) => filterFollowers(e.target.value, loggedInUser.followers, followersListContainer));
+
+            const closeBtn = document.createElement("button");
+            closeBtn.textContent = "Close";
+            closeBtn.className = "closeBtn";
+            closeBtn.addEventListener("click", () => document.body.removeChild(followersPopup));
+            followersContainer.appendChild(closeBtn);
+
+            followersPopup.appendChild(followersContainer);
+            document.body.appendChild(followersPopup);
+        }
+
+        function showFollowing() {
+
+
+            const followingPopup = document.createElement("div");
+            followingPopup.className = "followingPopup";
+
+            const followingContainer = document.createElement("div");
+            followingContainer.className = "followingContainer";
+
+            const title = document.createElement("h3");
+            title.textContent = "Following";
+            followingContainer.appendChild(title);
+
+            const searchInput = document.createElement("input");
+            searchInput.className = "searchInput";
+            searchInput.placeholder = "Search Following...";
+            followingContainer.appendChild(searchInput);
+
+            const followingListContainer = document.createElement("div");
+            followingListContainer.className = "followingList";
+            followingContainer.appendChild(followingListContainer);
+
+
+            displayFollowing(loggedInUser.following, followingListContainer);
+
+            searchInput.addEventListener("input", (e) => filterFollowing(e.target.value, loggedInUser.following, followingListContainer));
+
+            const closeBtn = document.createElement("button");
+            closeBtn.textContent = "Close";
+            closeBtn.className = "closeBtn";
+            closeBtn.addEventListener("click", () => document.body.removeChild(followingPopup));
+            followingContainer.appendChild(closeBtn);
+
+            followingPopup.appendChild(followingContainer);
+            document.body.appendChild(followingPopup);
+        }
+
+
+        function displayFollowers(followersList, container) {
+            container.innerHTML = "";
+
+            followersList.forEach(follower => {
+                const followerElem = document.createElement("div");
+                followerElem.className = "follower";
+
+                const userInfoDiv = document.createElement("div");
+                userInfoDiv.className = "follower-info";
+
+                const profilePic = document.createElement("img");
+                profilePic.src = follower.profileImage || "story6.avif";
+                profilePic.className = "avatarFollower";
+                userInfoDiv.appendChild(profilePic);
+
+                const followerName = document.createElement("span");
+                followerName.className = "followname";
+                followerName.textContent = typeof follower === "object" ? follower.username : follower;
+                userInfoDiv.appendChild(followerName);
+
+                followerElem.appendChild(userInfoDiv);
+                container.appendChild(followerElem);
+            });
+        }
+
+
+        function displayFollowing(followingList, container) {
+            container.innerHTML = "";
+
+            followingList.forEach(following => {
+                const followingElem = document.createElement("div");
+                followingElem.className = "following";
+
+                followingElem.setAttribute("data-username", following.username || following);
+
+                const userInfoDiv = document.createElement("div");
+                userInfoDiv.className = "follower-info";
+
+                const profilePic = document.createElement("img");
+                profilePic.src = following.profileImage || "story6.avif";
+                profilePic.className = "avatarFollower";
+                userInfoDiv.appendChild(profilePic);
+
+                const followingName = document.createElement("span");
+                followingName.className = "followname";
+                followingName.textContent = typeof following === "object" ? following.username : following;
+                userInfoDiv.appendChild(followingName);
+
+                followingElem.appendChild(userInfoDiv);
+
+                const unfollowButton = document.createElement("button");
+                unfollowButton.className = "unfollowBtn";
+                unfollowButton.textContent = "Unfollow";
+                unfollowButton.addEventListener("click", () => unfollowUser(following.username || following));
+                followingElem.appendChild(unfollowButton);
+                container.appendChild(followingElem);
+            });
+        }
+
+
+        function filterFollowers(query, followersList, container) {
+            const filteredFollowers = followersList.filter(follower => {
+                const username = typeof follower === "object" && follower.username ? follower.username : follower;
+                return username.toLowerCase().includes(query.toLowerCase());
+            });
+            displayFollowers(filteredFollowers, container);
+        }
+
+
+
+        function filterFollowing(query, followingList, container) {
+            const filteredFollowing = followingList.filter(following => {
+                const username = typeof following === "object" && following.username ? following.username : following;
+                return username.toLowerCase().includes(query.toLowerCase());
+            });
+            displayFollowing(filteredFollowing, container);
+        }
+
+        function unfollowUser(userToUnfollow) {
+
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+
+            loggedInUser.following = loggedInUser.following.filter(following => {
+                if (typeof following === "object" && following.username) {
+                    return following.username !== userToUnfollow;
+                }
+                return following !== userToUnfollow;
+            });
+
+
+            localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+
+
+            const followingElem = document.querySelector(`[data-username="${userToUnfollow}"]`);
+            if (followingElem) {
+                followingElem.remove();
+            }
+        }
+
+        function followUser(usernameToFollow) {
+
+
+
+
+            if (!loggedInUser.following.includes(usernameToFollow)) {
+                loggedInUser.following.push(usernameToFollow);
+
+                localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+
+
+                const followedUser = users.find(user => user.username === usernameToFollow);
+                if (followedUser && !followedUser.followers.includes(loggedInUser.username)) {
+                    followedUser.followers.push(loggedInUser.username);
+
+                    localStorage.setItem("users", JSON.stringify(users));
+                }
+
+
+                updateProfileInfo();
+            }
+        }
+
+        function updateProfileInfo() {
+
+            const followersCount = loggedInUser.followers.length;
+            const followingCount = loggedInUser.following.length;
+
+
+            document.getElementById("followers").textContent = `${followersCount} followers`;
+            document.getElementById("following").textContent = `${followingCount} following`;
+        }
+
+
+    </script>
+</body>
+
+</html>
