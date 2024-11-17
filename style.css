@@ -1,8 +1,5 @@
 body {
   background-color: black;
-  margin-left:auto;
-  margin-right:auto;
-  visibility: collapse;
   padding: 0;
   display: flex;
   justify-content: center;
